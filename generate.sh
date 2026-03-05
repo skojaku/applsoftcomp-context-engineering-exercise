@@ -23,7 +23,21 @@ fi
 echo "Generating pipeline from your prompt..."
 echo ""
 
-pdftotext "$PAPER_FILE" - | gemini -p "$(cat $PROMPT_FILE)" > "$OUTPUT_FILE"
+PAPER_TEXT=$(pdftotext "$PAPER_FILE" -)
+
+gemini -p "You are a bash script generator. Output ONLY a raw bash script — no explanation, no markdown, no code fences, no tool calls. The script will be saved directly to a file and executed.
+
+The paper text is provided below. Use it to understand the domain, references, and structure.
+
+--- PAPER ---
+$PAPER_TEXT
+--- END PAPER ---
+
+--- STUDENT SPECIFICATION ---
+$(cat $PROMPT_FILE)
+--- END SPECIFICATION ---
+
+Output the bash script now. Start with #!/bin/bash." > "$OUTPUT_FILE"
 
 echo "Done. Generated: $OUTPUT_FILE"
 echo ""

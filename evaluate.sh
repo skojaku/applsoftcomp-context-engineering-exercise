@@ -29,4 +29,6 @@ gemini -p "$(cat $EVAL_FILE)
 
 ---
 STUDENT PROMPT TO EVALUATE:
-$(cat $PROMPT_FILE)"
+$(cat $PROMPT_FILE)
+
+Output only the evaluation report as plain text. Do not use any tools."

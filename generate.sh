@@ -27,9 +27,16 @@ PAPER_TEXT=$(pdftotext "$PAPER_FILE" -)
 
 gemini -p "You are a bash script generator. Output ONLY a raw bash script — no explanation, no markdown, no code fences, no tool calls. The script will be saved directly to a file and executed.
 
-The paper text is provided below. Use it to understand the domain, references, and structure.
+CRITICAL RULES — violating any of these makes the script invalid:
+1. Every stage that produces content MUST call \`gemini -p\` to generate it. Do NOT write any content inline. Do NOT use heredocs to hardcode text. Do NOT simulate or pre-compute any output.
+2. The script must work on any PDF, not just this one. Do not hardcode reference titles, paper names, or any domain knowledge from the paper below.
+3. Each \`gemini -p\` call must read its input from files written by the previous stage, and write its output to a new file. No single call should do more than one stage of work.
+4. Use \`pdftotext paper.pdf -\` to extract text from a PDF for use in a gemini call.
+5. Check whether output files already exist before processing — skip steps that have already been completed.
 
---- PAPER ---
+The paper text below is provided ONLY so you understand the structure of a typical input (number of references, format, etc.). Do NOT use its content in the script.
+
+--- PAPER (for structure reference only) ---
 $PAPER_TEXT
 --- END PAPER ---
 

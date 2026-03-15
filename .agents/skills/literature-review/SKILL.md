@@ -37,6 +37,12 @@ Phase 2: Execute
 - input: paper + review focus + `progress.txt` + `learning.txt`
 - output: structured summary covering motivation, method, results, relation to prior work, open questions.
 - read `learning.txt` before starting; let known themes and gaps shape what you look for. Do NOT write shared files.
+- read the paper by running `tools/extract_pdf.py` to extract text from PDF files.
+
+    ```
+    python3 tools/extract_pdf.py <input.pdf>
+    ```
+    (Use `python` instead of `python3` if that's what your environment provides.)
 
 Phase 3: Reflect
 - input: paper + summary + `progress.txt` + `learning.txt`
@@ -44,20 +50,6 @@ Phase 3: Reflect
 - append to `progress.txt`: `[DONE] <paper title>`. What was covered, where notes are saved. (operational record)
 - append to `learning.txt` only if the paper adds something new: emerging theme, contradiction with prior work, methodological gap. No padding. (intellectual record)
 
-## Tools
-
-### extract_pdf.py
-
-Use `tools/extract_pdf.py` to extract text from PDF files before reviewing them.
-
-```
-python tools/extract_pdf.py <input.pdf> [output.txt]
-```
-
-- If `output.txt` is omitted, prints extracted text to stdout.
-- Requires `pymupdf`: `pip install pymupdf`
-
-Worker agents should extract PDF text first if the paper is in PDF format, then review the extracted text.
 
 ## Stop Conditions
 

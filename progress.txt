@@ -9,7 +9,7 @@
 
 # TODO (ordered by foundational importance)
 
-- [ ] lu2022_prompt_order_sensitivity.pdf — pending
+- [DONE] lu2022_prompt_order_sensitivity.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on order sensitivity contradicting brown2020 stability assumptions
 - [ ] gupta2023_majority_label_bias.pdf — pending
 - [ ] gupta2023_persona_bias.pdf — pending
 - [ ] li2023_emotional_stimuli.pdf — pending

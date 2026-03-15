@@ -8,6 +8,9 @@
 ## brown2020_gpt3_few_shot + Brown + 2020
 This paper establishes that scaling language models enables in-context learning without gradient updates, challenging the fine-tuning paradigm that dominated NLP. The key insight is that larger models become better meta-learners, using demonstrations in the context window to adapt to new tasks. However, weaknesses on NLI and complex reasoning tasks reveal that scale alone doesn't solve all challenges.
 
+## lu2022_prompt_order_sensitivity + Lu + 2022
+This paper reveals that prompt sample ordering causes performance variance from SOTA to random guessing, contradicting brown2020's implicit assumption that in-context learning is stable given sufficient scale. Order sensitivity persists across all model sizes including GPT-3 175B, suggesting it is a fundamental property of autoregressive language models rather than a capacity limitation. The entropy-based probing method demonstrates that we can identify performant prompts without validation data, preserving the true few-shot paradigm.
+
 ## <paper title> + <paper author> + <paper year>
 <reflection>
 

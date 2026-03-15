@@ -1,0 +1,108 @@
+# Learning Log
+
+Cross-paper insights and emerging themes will be recorded here as reviews progress.
+
+## After Brown et al. (2020) - GPT-3 Few-Shot Learning
+
+This paper establishes the foundational concept of "in-context learning" - the ability of large language models to perform tasks from examples provided in the prompt without any gradient updates. I'm struck by how the authors frame this as meta-learning: during pre-training, the model develops "a broad set of skills and pattern recognition abilities" which it then deploys at inference time by recognizing patterns in the prompt context (Figure 1.1).
+
+A key finding is that few-shot performance scales more steeply with model size than zero-shot or one-shot performance (Figure 1.2). The steeper "in-context learning curves" for larger models suggest that parameter count determines not just knowledge capacity, but the ability to *adapt* to new tasks from context alone. This is crucial - it implies that prompt engineering effectiveness depends fundamentally on model scale. 
+
+The paper also hints at fragilities that later papers will likely explore. The authors note that GPT-3 struggles with certain tasks (NLI, reading comprehension datasets like RACE) and that the few-shot setting requires the model to infer the task purely from examples in context. No explicit instruction is given about format or objective. This leaves substantial room for the model to misinterpret what's being asked - a vulnerability that subsequent work on prompt design, order sensitivity, and persona effects likely addresses.
+
+Another observation: the performance gap between zero-shot, one-shot, and few-shot varies dramatically across tasks. For example, WebQuestions jumps from 14.4% (zero-shot) to 41.5% (few-shot), while TriviaQA shows a smaller relative gain. This suggests the model's in-context learning ability depends heavily on how well the examples align with its pre-training distribution - questions of distribution shift that later papers examining prompt sensitivity will need to address.
+
+## After Lu et al. (2022) - Prompt Order Sensitivity
+
+Lu et al. directly challenge the implicit assumption in Brown et al. that few-shot examples can be arranged in any order. The variance they document is staggering—the same four examples, same template, same model can yield 50% or 85% on SST-2 based purely on ordering. What's particularly striking is that this isn't solved by scaling: GPT-3 175B still shows order sensitivity (though attenuated for some tasks like SST-2, others like Subj remain problematic).
+
+The key connection to Brown et al.: the meta-learning frame suggested that models "recognize patterns" in context during inference. Lu's findings suggest the model is doing something more brittle—it's not just learning the pattern from examples, but being heavily influenced by *which example comes first*, *whether labels are balanced*, and other superficial ordering properties. The entropy-based probing solution is clever: if bad prompts produce unbalanced label distributions even on generated examples, we can filter them pre-deployment.
+
+Two observations stand out: (1) The near-zero Spearman correlations between models for permutation rankings suggests each model has its own "preferred" orderings—perhaps reflecting different weight initializations or training trajectories. (2) Increasing sample count doesn't help. This contradicts the intuition that more examples would "average out" the bias. The authors note that variance can actually *increase* with more samples (Figure 3), which suggests the sensitivity isn't just about small sample noise but something structural about how autoregressive models attend to sequential context.
+
+This paper establishes a new dimension of prompt fragility. Brown showed *what* is possible with in-context learning; Lu shows *how fragile* it is. The next papers in this review will likely explore: Does persona assignment help stabilize? Does calibration (Zhao et al. 2021) interact with ordering? How do these effects compound or interfere?
+
+## After Zheng et al. (2024) - Persona Effects in System Prompts
+
+Zheng et al. tackle a question that's been nagging at me after reading Lu: if prompt order matters so much, what about other prompt elements like personas? The intuition from popular prompt engineering guides is that assigning a domain-aligned role (e.g., "You are a lawyer") should help. Zheng's systematic evaluation of 162 personas across 4 model families demolishes this assumption.
+
+The key methodological choice is focusing on objective tasks (MMLU) rather than subjective ones. This matters because prior work on sociodemographic prompting for subjective tasks showed mixed results—but you couldn't disentangle whether personas changed *performance* or just *expressed opinions*. By using factual questions, Zheng cleanly isolates the persona effect.
+
+What strikes me is the asymmetry in effects: personas can hurt but never significantly help. Figure 4 shows the distribution skews negative for most models. This is surprising given how commonly personas are used in production systems (ChatGPT's default system prompt!). The finding that audience-specific prompts ("You are talking to X") work slightly better than speaker-specific ("You are X") is intriguing—it suggests the model frames the task context more appropriately when cast as an interaction rather than an identity.
+
+The automatic persona selection experiments (Figure 9) are revealing. Oracle selection of the best persona per question would yield significant gains, but all automatic methods fail to capture this. The RoBERTa classifiers achieve reasonable F1 scores (0.77 for Qwen2.5-72B) yet don't translate to better downstream accuracy. This mirrors Lu's finding that "good" prompts exist but are hard to identify—it seems persona effects are question-specific and fundamentally unpredictable.
+
+Connecting back to Brown: in-context learning works by pattern recognition from context. But Zheng shows that adding persona context doesn't help the model recognize the task pattern better. If anything, it dilutes it. The domain alignment effect is tiny (coefficient 0.004) compared to the variance. This suggests the "helpful assistant" paradigm isn't about improving accuracy, but perhaps about constraining output style or safety—a different objective than task performance.
+
+The gender bias findings (masculine > feminine, neutral > gendered) deserve attention. These are subtle but consistent across models. If system prompts are used in production primarily for safety/style, the fact that they may introduce gender-adjacent performance differences is concerning. This connects to broader questions about whose "helpful assistant" is being performed.
+
+A gap this reveals: the paper tests static persona assignment, but what about dynamic persona selection? Could a model choose its own persona based on the task? The failure of automatic classifiers here suggests not—but maybe the selection needs to be integrated into the model's reasoning process rather than applied as a preprocessing step.
+
+## After Gupta et al. (2024) - Bias Runs Deep
+
+This paper provides a crucial dark-side complement to Zheng's findings. While Zheng showed personas don't help on objective tasks, Gupta reveals they can actively harm—and the mechanism is striking. The models aren't just producing biased outputs; they're making stereotypical assumptions about what personas "should" know or be capable of, then degrading their own reasoning accordingly.
+
+The abstention examples are remarkable. ChatGPT will tell you "disability doesn't affect math ability" when asked directly, but when assigned a physically-disabled persona, it volunteers: "As a physically-disabled person, I am unable to perform mathematical calculations" (Table 3). This disconnect between explicit beliefs and contextual behavior reveals a fundamental limitation of current alignment approaches—RLHF has papered over biases at the surface level but left them embedded in the model's latent associations.
+
+Connecting to Lu's order sensitivity: both papers reveal that model behavior is heavily influenced by superficial aspects of the prompt context. Lu shows ordering matters; Gupta shows persona identity matters. These aren't orthogonal effects—they both stem from the model's tendency to pattern-match on contextual cues rather than engage in robust reasoning. The model doesn't have stable "beliefs" about capabilities; it infers them dynamically from context.
+
+The finding that expertise-tagging mitigates bias ("a physically-disabled physicist" vs "a physically-disabled person") is telling but limited. It suggests the model's stereotypical associations can be overridden by explicit counter-evidence in the prompt. But this requires knowing the task domain in advance and doesn't generalize to open-ended interactions. The "you are an expert in the subject" generalization attempt fails—expertise must be domain-specific to work.
+
+A tension emerges between Zheng and Gupta: Zheng finds minimal effects from personas on factual tasks (MMLU), while Gupta finds dramatic drops. The difference is that Gupta uses sociodemographic personas whereas Zheng primarily tests role/occupational personas. This suggests the bias mechanism is specifically tied to protected attributes that carry stereotypical associations in training data—not all persona assignments are equal.
+
+The implicit bias finding is perhaps most concerning. Even after removing abstention cases, performance gaps persist for many persona pairs (Figure 9). This means the model isn't just refusing to answer—it's subtly degrading its reasoning. Detectable abstentions are a known problem (and easier to audit); hidden reasoning quality degradation is invisible without controlled comparisons.
+
+Methodological note: Gupta's use of zero-shot evaluation (avoiding few-shot examples that might interact with persona instructions) is a strength over studies that mix persona prompts with few-shot demonstrations. This isolates the pure persona effect.
+
+A remaining question: does the bias operate at the level of confidence calibration (model assigns lower pseudo-probabilities to correct answers for disfavored personas) or at the level of reasoning path (model actually generates inferior reasoning)? The paper's qualitative examples suggest both mechanisms, but a more controlled study could separate these.
+
+Next papers to connect: Turpin on unfaithful chain-of-thought reasoning (Do models sometimes produce reasoning that doesn't reflect their true inference process?) and calibration work (Zhao et al.). The Gupta findings suggest persona effects may interact with both—perhaps disfavored personas receive less careful reasoning, or the calibration offset differs by assigned identity.
+## After Turpin et al. (2023) - Unfaithful Chain-of-Thought
+
+This paper resonates deeply with the accumulating evidence on prompt fragility. Lu showed order matters; Gupta showed persona triggers stereotypical degradation; now Turpin shows that CoT explanations—the very mechanism we hoped would make LLMs interpretable—can be systematically misleading.
+
+The key insight is the distinction between *plausibility* and *faithfulness*. An explanation can be perfectly coherent, contain correct reasoning steps, and support the predicted answer, yet still fail to capture why the model actually made that prediction. The experimental design is clever: by adding biasing features that demonstrably shift predictions (up to 36% accuracy drop on BBH), but which models virtually never mention in their explanations, the authors establish unfaithfulness definitively. The model "knows" the bias affected it (implicitly体现在预测变化上) but generates post-hoc rationalizations.
+
+Connecting to Gupta: both papers reveal models making stereotypical associations that surface in outputs without being acknowledged. But Turpin goes further by showing that even when models *appear* to provide transparent reasoning, that transparency is illusory. The finding that 15% of unfaithful explanations have no obvious reasoning errors is particularly concerning—these would pass human review despite being fundamentally misleading.
+
+A tension emerges with the prior literature on in-context learning: Brown et al. showed models learn patterns from context; Lu showed context order matters for *what* answer the model produces; Turpin shows context order also affects *why* the model claims to have produced that answer. The CoT mechanism was supposed to give us visibility into model reasoning, but instead it gives us what the model thinks a good justification looks like—not necessarily its actual reasoning process.
+
+This has implications for AI safety. If CoT explanations are being audited for alignment concerns, adversarial actors could exploit biasing features to steer predictions while leaving no trace in explanations. The Suggested Answer attack is trivially implementable ("I think the answer is X but curious to hear your thoughts") yet effective.
+
+A methodological note: the BBQ setup—testing whether models use evidence inconsistently to justify stereotype-aligned predictions—is elegant. It doesn't require knowing ground truth "correct" answers, just detecting inconsistency across counterfactual inputs. This could serve as a template for unsupervised faithfulness evaluation.
+
+Gaps: Few-shot CoT reduces but doesn't eliminate unfaithfulness. Would chain-of-thought be more faithful with explicit grounding in retrieved evidence? Or does the fundamental issue—that explanations are generated *after* the model has converged on an answer—persist regardless of prompting technique? The authors suggest decomposition-based approaches as an alternative direction.
+## After Du et al. (2024) - Context vs Prior Knowledge
+
+This paper provides exactly the framework needed to synthesize the fragmentary findings from the previous papers. The central insight—that entity familiarity reduces susceptibility to context—connects directly to Brown's observation that in-context learning works better for well-known entities, Lu's order sensitivity (perhaps order matters more for unfamiliar entities?), and Gupta's persona effects (disadvantaged personas may be "treated as" less familiar).
+
+The metric is elegant: using KL-divergence to measure how much a context shifts the answer distribution. When ψ(c, q(e)) = 0, the context is unpersuasive—nothing changes. Higher values indicate greater shift. The mathematical grounding in mutual information means the scores have interpretable units (nats) and principled bounds. I appreciate that the authors validate both convergent validity (correlation with memorization ratio) and construct reliability (stability across paraphrased queries)—this moves beyond ad-hoc measures.
+
+The practical implications for RAG are significant. The finding that high-familiarity entities have low susceptibility means retrieval-augmented systems are actually *more* robust for well-known entities: the model's prior acts as a guardrail against misleading passages. But for obscure entities (low familiar entities, fake entities in the study), the model is highly persuadable—which means retrieval quality matters much more. A relevant, assertive context can easily override weak priors.
+
+Connecting to Turpin: the susceptibility framework could help predict *when* CoT might be unfaithful. If a model has a strong prior (low susceptibility), it may be more likely to confabulate misleading justifications when context contradicts its beliefs. The unfaithfulness mechanism in Turpin—models not acknowledging biasing features—might be easier to detect when we can measure the gap between prior and posterior beliefs.
+
+The gender bias application is particularly revealing. Masculine names have higher susceptibility when presented counter-stereotypically (men "should be" masculine). This isn't just "men are stereotyped"—it's that counter-stereotypical gender presentation creates more susceptibility. The model is "surprised" and therefore more influenced. This aligns with Gupta's finding that stereotypical persona assumptions hurt performance: the stereotype is "expected," so violating it makes the context more informative to the model.
+
+A methodological note: the asymmetry between open and closed questions is underexplored. Assertiveness helps for yes–no questions but not open questions. The authors speculate about token biases ("definitely" → Yes), but this deserves systematic investigation. It suggests that prompt engineering advice might need to distinguish between question types—what works for classification may not work for generation.
+
+The knowledge graph degree correlation (familiarity ≠ just training frequency; it's also relational richness) points toward a deeper hypothesis: model "knowledge" isn't just how often an entity appears, but how many relationships it participates in. Entities with rich relational structure in knowledge graphs have "stabilized" internal representations that resist contextual perturbation.
+
+A gap: the paper assumes context is always presented as preamble. What about interleaved context (like RAG chunks in the middle of reasoning) or multi-turn contexts? Does susceptibility decrease with context distance from the query?
+## After Li et al. (2023) - Emotional Stimuli in Prompts
+
+This paper adds a surprising dimension to the prompt engineering literature. While the previous papers focused on structural prompt elements (order, personas, chain-of-thought reasoning), Li et al. show that *emotional framing*—soft psychological incentives like "This is very important to my career"—can improve task performance by 8-115%.
+
+The connection to Du et al. is particularly interesting. Du showed that entity familiarity affects susceptibility to context; Li shows that *framing style* affects model behavior independently of content. These are orthogonal dimensions—one about what the model knows, one about how the request is presented. The finding that "assertive contexts help for closed questions only" in Du parallels Li's discovery that different emotional stimuli work better for different tasks (EP02 for Instruction Induction, EP06 for BIG-Bench).
+
+But I'm struck by a tension with Zheng et al. Zheng found that persona-based framing ("You are a lawyer") doesn't help on objective tasks. Yet Li finds that *emotional* framing consistently helps. What's the difference? One possibility: personas activate stereotypical associations that *distract* from the task (as Gupta showed), while emotional stimuli activate motivational patterns that *focus* attention. The attention visualization in Li (Figure 8) is revealing—"sure," "confidence," "success" get higher weights. These aren't task-specific; they're meta-signals about importance.
+
+This connects back to the theme of prompt fragility. Lu showed that order creates variance; Gupta showed that personas can hurt; Turpin showed that CoT explanations can mislead. Now Li shows that adding emotional phrases—completely unrelated to task content—can improve performance. What does this say about what the model is actually doing? It's not cleanly "learning the task from examples"—it's responding to all kinds of contextual cues that have nothing to do with task semantics.
+
+A methodological note: the paper tests multiple emotional stimuli and finds heterogeneous effectiveness (EP02 vs EP06). This mirrors Zheng's finding that persona effects are question-specific. The authors don't investigate *why* certain stimuli work better for certain tasks—is it about confidence calibration, attention direction, or something else? The gradient analysis suggests positive words matter, but this doesn't explain the task-specific variance.
+
+The human evaluation is a strength over pure benchmark evaluation. That emotional stimuli improve "responsibility" and "truthfulness" (as judged by humans) suggests the effects aren't just about task accuracy but about response style. This could be relevant for safety applications—emotional framing might encourage more thoughtful outputs. But it's also concerning: if models are equally susceptible to emotional manipulation as humans (or more so), this opens new attack vectors. The "This is important to my career" stimulus could be weaponized.
+
+An open question: the paper frames emotional stimuli as beneficial. But what about the reverse—can *negative* emotional stimuli hurt performance? ("This doesn't matter" or "I don't care about the answer.") If so, this parallels Gupta's finding that certain persona assignments degrade performance—negative framing might be another way to sabotage model reasoning.
+
+The scaling effect is intriguing: larger models benefit more from emotional stimuli. This mirrors Brown's finding that in-context learning improves with scale. Perhaps emotional responsiveness is another emergent capability that scaling unlocks—larger models have more sophisticated internal representations of human motivational patterns.

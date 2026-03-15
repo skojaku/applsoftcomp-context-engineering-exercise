@@ -1,10 +1,5 @@
 # Research Notes
 
-<!-- Append one section per paper. Do not edit existing sections. -->
-
----
-
-<!--
 ## <Paper Title> (<Year>)
 
 ### Summary
@@ -18,4 +13,5 @@
 4. Results: <What are the key findings? How do they contribute to the field? Any surprising/significant results?>
 
 5. Significance: <How does it advance understanding? What are potential applications/implications?>
--->
+
+---

@@ -3,3 +3,9 @@
 # STATUS: DONE | SKIPPED | BLOCKED
 # Add new entries below. Do not remove existing ones.
 
+# TODO
+
+- [ ] <paper title> — <one-line note on what was produced>
+- [ ] <paper title> — <one-line note on what was produced>
+- [ ] <paper title> — <one-line note on what was produced>
+...

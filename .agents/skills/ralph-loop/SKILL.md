@@ -5,8 +5,8 @@ description: Lead agent selects tasks one at a time, spawns a stateless sub-agen
 
 # Ralph Loop
 
-**Lead agent** = orchestrator. Never does the work. Selects tasks, spawns sub-agents, maintains shared state.
-**Sub-agent** = stateless. No memory of prior iterations. Reads context files, does task, reports back.
+Lead agent = orchestrator. Never does the work. Selects tasks, spawns sub-agents, maintains shared state.
+Sub-agent = stateless. No memory of prior iterations. Reads context files, does task, reports back.
 
 Shared files:
 - `progress.txt` — what's been done
@@ -16,29 +16,31 @@ Shared files:
 
 ## Lead Agent: Loop Steps
 
-**1. Init (first run only)**
+1. Init (first run only)
 Create missing files:
 ```
 progress.txt:  # Progress Log\n(empty)
 learning.txt:  # Lessons Learned\n(empty)
 ```
 
-**2. Select task**
+2. Select task
 Read `progress.txt`. Pick next task that: not done, dependencies met, completable in one pass.
 No tasks left → write final summary, stop.
 
-**3. Spawn sub-agent**
-Single sub-agent per iteration. Prompt must include:
+3. Spawn sub-agent
+Use the **Task tool** to spawn a single sub-agent per iteration.
+The sub-agent should be `general` (built-in) or any agent defined with `mode: subagent` in `opencode.json` or `.opencode/agents/`.
+Task tool prompt must include:
 1. Task description + done criteria
 2. Full contents of `progress.txt`
 3. Full contents of `learning.txt`
 4. Expected output format
 5. Explicit: *"No memory of prior iterations. Use only the context provided."*
 
-**4. Collect results**
+4. Collect results
 Review output: completed? errors? partial? new discoveries?
 
-**5. Update shared state**
+5. Update shared state
 Append to `progress.txt`:
 ```
 [DONE] <task>
@@ -54,7 +56,7 @@ Append to `learning.txt` only if genuinely useful:
 ```
 No padding. Factual and actionable only.
 
-**6. Loop → back to step 2**
+6. Loop → back to step 2
 
 ---
 

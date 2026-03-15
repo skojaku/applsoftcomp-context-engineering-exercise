@@ -8,7 +8,7 @@
 - [DONE] brown2020_gpt3_few_shot.pdf — research note entry + learning log entry on scale enabling in-context learning
 - [DONE] du2024_context_vs_prior.pdf — research note entry + learning log entry on information-theoretic metrics (persuasion/susceptibility scores) showing entity familiarity determines context reliance
 - [DONE] gupta2023_majority_label_bias.pdf — research note entry + learning log entry on RB10 metric showing larger LLMs are robust (~90%) to majority label bias in binary tasks, with instructions critical for robustness
-- [ ] gupta2023_persona_bias.pdf —
+- [DONE] gupta2023_persona_bias.pdf — research note entry + learning log entry on persona-induced bias manifesting as explicit abstentions and implicit reasoning errors, with disability/religion dimensions most affected and de-biasing prompts ineffective
 - [ ] leviathan2025_prompt_repetition.pdf —
 - [ ] li2023_emotional_stimuli.pdf —
 - [ ] lu2022_prompt_order_sensitivity.pdf —

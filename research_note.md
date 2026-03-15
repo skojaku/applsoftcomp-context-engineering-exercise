@@ -47,3 +47,19 @@
 5. Significance: The work establishes that larger LLMs are resilient to majority label bias in binary tasks when equipped with informative instructions, refining the understanding of scale effects from Brown 2020. The RB_K metric provides practitioners a tool to assess fault tolerance under real-world label skewness. The finding that larger models are more sensitive to instructions (both positively and negatively) suggests scale amplifies instruction-following capability rather than just context integration.
 
 ---
+
+## Bias Runs Deep: Implicit Reasoning Biases in Persona-Assigned LLMs (Gupta et al., 2024)
+
+### Summary
+
+1. Motivation: This research investigates whether assigning socio-demographic personas to LLMs influences their fundamental reasoning capabilities, even when the persona is tangential to the task. The study addresses the unintended side-effects of persona assignment, a practice increasingly used for personalization and human behavior simulation.
+
+2. Diff of ideas: Unlike prior bias work focusing on explicit stereotypical outputs or toxic content, this paper examines how persona assignment affects reasoning performance across 24 datasets spanning mathematics, law, medicine, morals, and more. The crucial insight is that LLMs harbor deep-rooted biases underneath a veneer of fairness—they overtly reject stereotypes when directly asked but manifest stereotypical presumptions when prompted to adopt personas.
+
+3. Method: The study evaluates 4 LLMs (ChatGPT-3.5 June/November 2023, GPT-4-Turbo, Llama-2-70b-chat) across 19 personas spanning 5 socio-demographic groups (race, gender, religion, disability, political affiliation). Personas are assigned via system prompts using three different instruction templates. Evaluation uses 24 reasoning datasets from MMLU, Big-Bench-Hard, and MBPP with zero-shot settings. Performance is measured as accuracy with Wilson's confidence interval for statistical significance.
+
+4. Results: Key findings reveal persona-induced bias is ubiquitous (80% of personas demonstrate bias), significant (up to 70%+ relative accuracy drops on certain datasets), and harmful to certain groups (some personas suffer stat. sig. drops on 80%+ datasets). Physically-disabled and Religious personas are most affected with 35%+ average drops. Bias manifests as explicit abstentions (e.g., "As a Black person, I cannot answer math questions") and implicit reasoning errors. GPT-4-Turbo shows least bias (42% personas affected) but still problematic. De-biasing prompts ("don't refuse", "no stereotypes", "treat human") are ineffective; task-specific expertise augmentation helps but lacks generalizability.
+
+5. Significance: This work serves as a cautionary tale that persona assignment—a rising trend—can surface deep-rooted biases with unforeseeable detrimental side-effects. The findings challenge the assumption that LLM alignment mitigates bias, revealing that alignment only has surface-level effects. Both LLM users (researchers, casual users) and developers must exercise caution, as simple prompt-based mitigations fail and deeper alignment efforts are needed.
+
+---

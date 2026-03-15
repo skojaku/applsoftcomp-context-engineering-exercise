@@ -16,4 +16,4 @@
 - [DONE] turpin2023_unfaithful_cot.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on unfaithful CoT explanations challenging transparency assumptions
 - [DONE] zheng2024_personas_system_prompts.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on system prompt personas showing random effects unlike gupta2023_persona_bias user-assigned persona bias
 - [DONE] du2024_context_vs_prior.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on information-theoretic metrics revealing entity familiarity reduces context susceptibility, complementing gupta2023 robustness findings
-- [ ] leviathan2025_prompt_repetition.pdf — pending
+- [DONE] leviathan2025_prompt_repetition.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on prompt repetition as structural solution to causal attention constraints, complementing lu2022 order sensitivity and du2024 entity familiarity findings

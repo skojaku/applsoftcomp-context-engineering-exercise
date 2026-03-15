@@ -110,3 +110,19 @@
 5. Significance: This work provides theoretically grounded, interpretable metrics for quantifying the interplay between context and prior knowledge in LMs, revealing that entity familiarity (training frequency, knowledge graph degree) systematically reduces context susceptibility. The metrics enable finer-grained analysis than prior aggregate measures, with applications to social science measurement and bias analysis. The findings suggest that retrieval-augmented generation and few-shot learning effectiveness may vary systematically based on entity familiarity.
 
 ---
+
+## Prompt Repetition Improves Non-Reasoning LLMs (2025)
+
+### Summary
+
+1. Motivation: Leviathan et al. investigate whether repeating the input prompt improves language model performance, addressing the causal attention limitation where past tokens cannot attend to future tokens. While chain-of-thought and other prompting techniques improve performance, they increase output length and latency. The authors seek a drop-in improvement that preserves output format and efficiency.
+
+2. Diff of ideas: Rather than designing new prompt content or structure, the authors hypothesize that simple repetition of the entire prompt enables each token to attend to every other token, mitigating order sensitivity without increasing generation cost. This differs from prior work on prompt engineering (ordering, emotional stimuli, personas) by treating repetition as an architectural workaround for causal masking. The key insight is that repetition moves computation to the parallelizable prefill stage rather than the sequential generation stage.
+
+3. Method: The authors evaluated 7 models (Gemini 2.0 Flash/Lite, GPT-4o/mini, Claude 3 Haiku/Sonnet, Deepseek V3) on 7 benchmarks (ARC, OpenBookQA, GSM8K, MMLU-Pro, MATH, NameIndex, MiddleMatch) using prompt repetition (query concatenated twice) versus baseline. They measured accuracy via McNemar test (p<0.1), output length, and latency across reasoning and non-reasoning modes. Variants included verbose repetition and triple repetition, with padding controls to isolate repetition effects from length increases.
+
+4. Results: Without reasoning, prompt repetition wins 47 out of 70 benchmark-model combinations with 0 losses, improving all tested models. Gains are larger for options-first ordering (where models process answer options without question context) than question-first. On NameIndex, Gemini 2.0 Flash-Lite improves from 21.33% to 97.33% with repetition. With reasoning enabled, results are neutral to slightly positive (5 wins, 1 loss, 22 ties). Latency and output length remain unchanged except for very long requests on Anthropic models.
+
+5. Significance: This work establishes prompt repetition as a simple, efficient default for non-reasoning tasks, achieving consistent gains without deployment friction. The findings connect to lu2022_prompt_order_sensitivity by addressing order effects through bidirectional attention, and to du2024_context_vs_prior by showing that increased prompt exposure strengthens entity familiarity effects. Unlike li2023_emotional_stimuli or gupta2023 papers adding semantic content, repetition is purely structural, suggesting attention mechanics alone limit baseline performance. The work raises questions about why reasoning models already learn to repeat prompts during RL training, implying repetition may be a natural solution to causal attention constraints.
+
+---

@@ -1,18 +1,16 @@
 # Progress Log
+# Each entry: [STATUS] filename.pdf — <one-line note on what was produced>
+# STATUS: DONE | SKIPPED | BLOCKED
+# Add new entries below. Do not remove existing ones.
 
-## Papers to Review
-(none remaining)
+# TODO
 
-## Papers Reviewed
-- brown2020_gpt3_few_shot.pdf (foundational GPT-3 paper defining in-context learning)
-- lu2022_prompt_order_sensitivity.pdf (in-context learning order sensitivity and entropy-based prompt selection)
-- zheng2024_personas_system_prompts.pdf (systematic evaluation of persona effects in system prompts across 162 roles)
-- gupta2023_persona_bias.pdf (implicit reasoning biases in persona-assigned LLMs, showing personas hurt performance through stereotypical assumptions)
-- turpin2023_unfaithful_cot.pdf (chain-of-thought explanations can be systematically unfaithful—models rationalize bias-consistent answers without acknowledging biasing features)
-- du2024_context_vs_prior.pdf (mutual information metrics for context persuasion and entity susceptibility, showing entity familiarity reduces susceptibility)
-- li2023_emotional_stimuli.pdf (EmotionPrompt: emotional stimuli appended to prompts improve LLM performance, grounding in psychology theories)
-- leviathan2025_prompt_repetition.pdf (repeating the input prompt improves non-reasoning LLM performance by enabling full bidirectional attention among prompt tokens)
-- gupta2023_majority_label_bias.pdf (robustness boundaries of LLMs to majority label bias in few-shot prompts, finding larger models and instructions improve robustness)
-
-## Status
-Paper 9/9 COMPLETE. Literature review finished.
+- [DONE] brown2020_gpt3_few_shot.pdf — research note entry + learning log entry on scale enabling in-context learning
+- [DONE] du2024_context_vs_prior.pdf — research note entry + learning log entry on information-theoretic metrics (persuasion/susceptibility scores) showing entity familiarity determines context reliance
+- [ ] gupta2023_majority_label_bias.pdf —
+- [ ] gupta2023_persona_bias.pdf —
+- [ ] leviathan2025_prompt_repetition.pdf —
+- [ ] li2023_emotional_stimuli.pdf —
+- [ ] lu2022_prompt_order_sensitivity.pdf —
+- [ ] turpin2023_unfaithful_cot.pdf —
+- [ ] zheng2024_personas_system_prompts.pdf —

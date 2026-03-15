@@ -1,98 +1,88 @@
 ---
 name: ralph-loop
-description: Lead agent selects tasks one at a time, spawns a stateless sub-agent per task, collects results, updates progress.txt and learning.txt, repeats.
+description: Lead agent runs a loop, delegating task selection, execution, and reflection to stateless sub-agents. Shared state lives in progress.txt and learning.txt.
 ---
 
 # Ralph Loop
 
-Lead agent = orchestrator. Never does the work. Selects tasks, spawns sub-agents, maintains shared state.
-Sub-agent = stateless. No memory of prior iterations. Reads context files, does task, reports back.
+Three sub-agent roles per iteration. All are stateless — no memory of prior iterations.
+
+| Role | Job |
+|---|---|
+| **selector** | Reads progress.txt, picks next task, returns task description |
+| **worker** | Does the task, returns results |
+| **reflector** | Reviews results, appends to progress.txt and learning.txt |
+
+Lead agent = loop controller only. Spawns sub-agents in sequence, checks stop conditions, repeats.
 
 Shared files:
-- `progress.txt` — what's been done
+- `progress.txt` — completed tasks and artifacts
 - `learning.txt` — lessons/pitfalls from prior iterations
 
 ---
 
 ## Lead Agent: Loop Steps
 
-1. Init (first run only)
+**1. Init (first run only)**
 Create missing files:
 ```
 progress.txt:  # Progress Log\n(empty)
 learning.txt:  # Lessons Learned\n(empty)
 ```
 
-2. Select task
-Read `progress.txt`. Pick next task that: not done, dependencies met, completable in one pass.
-No tasks left → write final summary, stop.
+**2. Spawn selector sub-agent**
+Pass full contents of `progress.txt`. Selector returns: next task + done criteria, or `DONE` if nothing remains.
+If `DONE` → stop.
 
-3. Spawn sub-agent
-Use the **Task tool** to spawn a single sub-agent per iteration.
-The sub-agent should be `general` (built-in) or any agent defined with `mode: subagent` in `opencode.json` or `.opencode/agents/`.
-Task tool prompt must include:
-1. Task description + done criteria
-2. Full contents of `progress.txt`
-3. Full contents of `learning.txt`
-4. Expected output format
-5. Explicit: *"No memory of prior iterations. Use only the context provided."*
+**3. Spawn worker sub-agent**
+Pass task from selector + full contents of `progress.txt` and `learning.txt`.
+Worker returns: what was done, output artifacts, any errors.
 
-4. Collect results
-Review output: completed? errors? partial? new discoveries?
+**4. Spawn reflector sub-agent**
+Pass task description + worker results + full contents of `progress.txt` and `learning.txt`.
+Reflector writes directly to `progress.txt` and `learning.txt` (it owns these writes).
 
-5. Update shared state
-Append to `progress.txt`:
-```
-[DONE] <task>
-  - what was done
-  - output artifacts (paths, values)
-  - iteration/date
-```
-Append to `learning.txt` only if genuinely useful:
-```
-[<task>] <lesson>
-  - what happened
-  - what to do/avoid next time
-```
-No padding. Factual and actionable only.
+**5. Loop → back to step 2**
 
-6. Loop → back to step 2
+All sub-agents are spawned via the **Task tool**. Use `general` (built-in) or any agent with `mode: subagent`.
 
 ---
 
-## Sub-Agent: Steps
+## Sub-Agent Instructions
 
-1. Read `progress.txt` — know what exists
-2. Read `learning.txt` — apply lessons before starting
-3. Do the task
-4. Report results clearly
+All sub-agents start their prompt with:
+> *"You are a stateless sub-agent. No memory of previous iterations. Use only the context provided."*
 
-Do NOT write to `progress.txt` or `learning.txt`. Lead agent owns those.
+### Selector
+Input: contents of `progress.txt`
+Output: next task + done criteria. If all tasks complete, return exactly `DONE`.
+Rules: pick task that is not done and has dependencies met. Small enough for one pass.
+
+### Worker
+Input: task description + done criteria + contents of `progress.txt` + contents of `learning.txt`
+Output: summary of what was done, output artifacts (file paths, values), errors if any.
+Rules: apply all lessons from `learning.txt` before starting. Do NOT write to shared files.
+
+### Reflector
+Input: task description + worker output + contents of `progress.txt` + contents of `learning.txt`
+Output: updated `progress.txt` and `learning.txt` (write directly to files).
+Rules:
+- Append to `progress.txt`:
+  ```
+  [DONE] <task>
+    - what was done
+    - output artifacts
+  ```
+- Append to `learning.txt` only if genuinely useful — no padding:
+  ```
+  [<task>] <lesson>
+    - what happened / what to do or avoid next time
+  ```
 
 ---
 
 ## Stop Conditions
 
-- All tasks done in `progress.txt`
-- Task failing repeatedly + blocker captured in `learning.txt` → escalate to user
+- Selector returns `DONE`
+- Worker fails repeatedly + reflector has logged the blocker → lead agent escalates to user
 - User cancels
-
----
-
-## Example Sub-Agent Prompt
-
-```
-You are a stateless sub-agent. No memory of previous iterations.
-
-## Task
-<description and done criteria>
-
-## progress.txt
-<contents>
-
-## learning.txt
-<contents>
-
-## Output
-Summarize what you did and produced. Do NOT modify progress.txt or learning.txt.
-```

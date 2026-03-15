@@ -12,7 +12,9 @@ Three stateless sub-agents per iteration (no memory of prior iterations):
 
 Lead agent = loop controller only. Spawns sub-agents in sequence, checks stop, repeats.
 
-Shared files: `progress.txt` (papers reviewed, key findings), `learning.txt` (emerging themes, contradictions, gaps)
+Shared files (persist across iterations; substitute for agent memory):
+- `progress.txt`: operational log. Records which papers are done and what was produced. Lets each fresh agent know what exists and what remains. Prevents re-reviewing the same paper.
+- `learning.txt`: intellectual accumulation. Records cross-paper insights — emerging themes, contradictions, methodological patterns, open gaps. Each worker reads this before reviewing, so insights compound across iterations.
 
 ## Lead Agent Loop
 
@@ -34,13 +36,13 @@ Phase 1: Select
 Phase 2: Execute
 - input: paper + review focus + `progress.txt` + `learning.txt`
 - output: structured summary covering motivation, method, results, relation to prior work, open questions.
-- consult `learning.txt` for known themes and gaps to inform the review. Do NOT write shared files.
+- read `learning.txt` before starting; let known themes and gaps shape what you look for. Do NOT write shared files.
 
 Phase 3: Reflect
 - input: paper + summary + `progress.txt` + `learning.txt`
 - output: write directly to both files.
-- append to `progress.txt`: `[DONE] <paper title>`. Key findings, where notes are saved.
-- append to `learning.txt` only if useful: `[<paper>] <insight>`. New themes, contradictions, gaps worth tracking across papers. No padding.
+- append to `progress.txt`: `[DONE] <paper title>`. What was covered, where notes are saved. (operational record)
+- append to `learning.txt` only if the paper adds something new: emerging theme, contradiction with prior work, methodological gap. No padding. (intellectual record)
 
 ## Stop Conditions
 

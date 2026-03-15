@@ -14,6 +14,12 @@ This paper reveals that prompt sample ordering causes performance variance from 
 ## gupta2023_majority_label_bias + Gupta + 2023
 This paper reveals that majority label bias in ICL is not uniform—larger models (40B+) show ~80-100% robustness on binary tasks, contradicting Zhao et al. (2021)'s claim of universal susceptibility. The RobustnessBoundary@K metric captures deployment-relevant fault tolerance better than mean/std metrics, showing that model scale and task instructions jointly mitigate label bias. However, multi-class tasks remain vulnerable (~50% robustness), suggesting label bias is fundamentally harder when label space expands.
 
+## gupta2023_persona_bias + Gupta + 2023
+This paper reveals persona-induced bias as a distinct phenomenon from majority label bias—assigning socio-demographic personas causes performance drops (up to 70%) through explicit abstentions and implicit reasoning errors, persisting across all model sizes including GPT-4. Unlike majority label bias which scale mitigates, persona bias shows only partial improvement with scale (GPT-4: 42% vs ChatGPT-3.5: 80-100% biased personas), suggesting different underlying mechanisms. The failure of prompt-based de-biasing contrasts with gupta2023_majority_label_bias where instructions substantially improved robustness, indicating persona bias is more deeply embedded than label distribution bias.
+
+## li2023_emotional_stimuli + Li + 2023
+This paper reveals that emotional prompts (EmotionPrompt) significantly improve LLM performance (8% on Instruction Induction, 115% on BIG-Bench), truthfulness, and responsibility by tapping into psychological mechanisms like self-monitoring and social cognitive theory. Unlike prior papers treating prompts as neutral information carriers, this work shows emotional stimuli enrich prompt representations through attention mechanisms, with positive words contributing over 50% to final outputs. The finding that few-shot settings benefit more from emotional prompts (2.05 vs 0.33 gain) complements lu2022's order sensitivity work—both reveal subtle prompt characteristics substantially impact performance. However, unlike gupta2023 papers where scale mitigates biases, emotional prompting shows larger relative gains on mid-sized models (Vicuna: 9.58%, Llama 2: 6.00%) than already-high-performing models (GPT-4: 0.85%), suggesting emotional stimuli work through different mechanisms than bias robustness.
+
 ## <paper title> + <paper author> + <paper year>
 <reflection>
 

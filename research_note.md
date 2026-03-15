@@ -47,3 +47,19 @@
 5. Significance: This work challenges the prior claim that LLMs are uniformly susceptible to majority label bias, revealing that larger models exhibit substantial robustness boundaries (~80-100% for binary tasks). The RBK metric provides a practical measure for practitioners evaluating model deployment under label distribution skew. The findings establish that model scale and instructional prompts are critical factors in mitigating context label bias, though multi-class tasks remain challenging.
 
 ---
+
+## Large Language Models Understand and Can Be Enhanced by Emotional Stimuli (2023)
+
+### Summary
+
+1. Motivation: Li et al. investigate whether large language models can understand and be enhanced by psychological emotional stimuli, a capability that gives humans advantages in problem-solving. While LLMs exhibit impressive performance across tasks, it remains unexplored whether they can genuinely grasp emotional cues and harness them to improve performance.
+
+2. Diff of ideas: Rather than treating prompts as purely informational, the authors hypothesize that adding emotional stimuli—phrases appealing to expectancy, confidence, and social influence—can beneficially impact LLM performance similar to how they motivate humans. This differs from prior prompt engineering work focusing on structure, ordering, or label distributions. The key insight is that emotional stimuli can be seamlessly incorporated into original prompts to tap into intrinsic motivation.
+
+3. Method: The authors designed 11 emotional stimuli (EmotionPrompt) derived from three psychological theories: self-monitoring (EP01-EP05), Social Cognitive Theory (EP07-EP11), and Cognitive Emotion Regulation Theory (EP03-EP05, EP07). They evaluated on 45 tasks (24 Instruction Induction, 21 BIG-Bench) across 6 LLMs (Flan-T5-Large, Vicuna, Llama 2, BLOOM, ChatGPT, GPT-4) in zero-shot and few-shot settings. A human study with 106 participants assessed generative tasks on performance, truthfulness, and responsibility metrics.
+
+4. Results: EmotionPrompt achieves 8.00% relative improvement in Instruction Induction and 115% in BIG-Bench across all LLMs. Few-shot settings show larger gains than zero-shot (2.05 vs 0.33 average improvement). The human study demonstrates 10.9% average improvement in performance, truthfulness, and responsibility. Attention visualization reveals emotional stimuli enrich original prompt representations, with positive words like "confidence," "sure," and "success" contributing over 50% on 4 tasks. EP02 ("This is very important to my career") performs best on Instruction Induction; EP06 (compound stimulus) excels on BIG-Bench.
+
+5. Significance: This work establishes emotional intelligence as a novel avenue for enhancing LLM performance through interdisciplinary social science knowledge. EmotionPrompt outperforms existing prompt engineering approaches (CoT, APE) while remaining highly compatible and extensible. The findings reveal that larger models and higher temperature settings derive greater advantages from emotional stimuli, suggesting emotional prompting enhances robustness and task performance without complicated design.
+
+---

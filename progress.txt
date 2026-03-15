@@ -11,8 +11,8 @@
 
 - [DONE] lu2022_prompt_order_sensitivity.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on order sensitivity contradicting brown2020 stability assumptions
 - [DONE] gupta2023_majority_label_bias.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on label bias robustness boundaries in ICL
-- [ ] gupta2023_persona_bias.pdf — pending
-- [ ] li2023_emotional_stimuli.pdf — pending
+- [DONE] gupta2023_persona_bias.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on persona-induced bias distinct from majority label bias, persisting despite scale and de-biasing prompts
+- [DONE] li2023_emotional_stimuli.pdf — research note with Summary (Motivation, Method, Results, Significance) + learning on emotional prompts improving performance through psychological mechanisms
 - [ ] turpin2023_unfaithful_cot.pdf — pending
 - [ ] zheng2024_personas_system_prompts.pdf — pending
 - [ ] du2024_context_vs_prior.pdf — pending

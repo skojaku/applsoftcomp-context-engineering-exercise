@@ -1,0 +1,6 @@
+# Learning Log
+# Running reflections across papers. Written in progressive, conversational form.
+# Each entry: [paper-filename] <reflection>
+# Focus on: new themes NOT yet captured, contradictions with prior papers, methodological patterns, open gaps.
+# If a prior theme is no longer supported by new evidence, note that explicitly.
+

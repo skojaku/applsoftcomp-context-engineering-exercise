@@ -1,0 +1,5 @@
+# Progress Log
+# Each entry: [STATUS] filename.pdf — <one-line note on what was produced>
+# STATUS: DONE | SKIPPED | BLOCKED
+# Add new entries below. Do not remove existing ones.
+

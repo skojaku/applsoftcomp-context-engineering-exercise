@@ -3,40 +3,29 @@ name: literature-review
 description: Write a literature review by iterating over papers one at a time, accumulating summaries and themes across iterations.
 ---
 
-# Literature Review Loop
-
-Three stateless sub-agents per iteration (no memory of prior iterations):
-- selector: reads progress.txt, picks next paper to review
-- worker: reviews the paper, returns structured summary
-- reflector: updates progress.txt + learning.txt based on summary
+Run a stateless sub-agent per iteration (no memory of prior iterations):
+- reads progress.txt, picks next paper to review, reviews the paper,  and updates progress.txt + learning.txt + research_note.md based on summary
 
 Lead agent = loop controller only. Spawns sub-agents in sequence, checks stop, repeats.
 
 Shared files (persist across iterations; substitute for agent memory):
 - `progress.txt`: operational log. Records which papers are done and what was produced. Lets each fresh agent know what exists and what remains. Prevents re-reviewing the same paper.
-- `learning.txt`: intellectual accumulation. Records cross-paper insights — emerging themes, contradictions, methodological patterns, open gaps. Each worker reads this before reviewing, so insights compound across iterations.
+- `learning.txt`: intellectual accumulation. Records cross-paper insights. Each worker reads this before reviewing, so insights compound across iterations.
+- `research_note.md`: summary of each paper + cross-paper themes, organized for human consumption.
 
 ## Lead Agent Loop
 
-1. Init (first run only). Create missing files with empty headers.
-2. Spawn selector. Pass `progress.txt`. Returns: next paper + review focus, or `DONE`. If `DONE`, stop.
-3. Spawn worker. Pass paper + review focus + `progress.txt` + `learning.txt`. Returns: structured summary.
-4. Spawn reflector. Pass paper + summary + `progress.txt` + `learning.txt`. Writes files directly.
-5. Loop, back to step 2.
+1. Init (first run only). Copy `templates/progress.txt`, `templates/learning.txt`, and `templates/research_note.md` into the working directory if they don’t already exist.
+2. Pass `progress.txt` + `learning.txt` to a sub-agent. It selects the next paper to review, based on what’s done and what’s left, and what themes/gaps have already been identified.
+5. Loop, back to step 2 until stop condition met.
 
 All sub-agents via Task tool. Use `general` or any `mode: subagent` agent.
 
 ## Sub-Agent Instructions
 
-Phase 1: Select
-- input: `progress.txt`
-- output: next paper to review + what to focus on. Return `DONE` if all papers reviewed.
+- read `progress.txt`
 - pick: not yet reviewed, foundational papers before dependent ones, reviewable in one pass.
-
-Phase 2: Execute
-- input: paper + review focus + `progress.txt` + `learning.txt`
-- output: structured summary covering motivation, method, results, relation to prior work, open questions.
-- read `learning.txt` before starting; let known themes and gaps shape what you look for. Do NOT write shared files.
+- read `learning.txt` to understand what themes and gaps have already identified. 
 - read the paper by running `tools/extract_pdf.py` to extract text from PDF files.
 
     ```
@@ -44,12 +33,37 @@ Phase 2: Execute
     ```
     (Use `python` instead of `python3` if that's what your environment provides.)
 
-Phase 3: Reflect
-- input: paper + summary + `progress.txt` + `learning.txt`
-- output: write directly to both files.
-- append to `progress.txt`: `[DONE] <paper title>`. What was covered, where notes are saved. (operational record)
-- append to `learning.txt` only if the paper adds something new: emerging theme, contradiction with prior work, methodological gap. No padding. (intellectual record)
+- Update progress.txt by marking the paper as done and note what was produced (summary, themes, contradictions).
+- Update `research_note.md` by creating a new section based on the following template. Do not read `research_note.md` but append to it. 
 
+   ```
+   ## <paper title>
+
+   ### Summary 
+    1. Motivation: <Why was this research conducted? What problem does it solve or question does it answer?>
+    
+    2. Diff of ideas: <How does it differ from previous research? Why is this difference crucial? Why not use existing methods/theories?>
+    
+    3. Method: <What approach/methodology addresses the research question? (experimental design, data collection, analysis techniques, theoretical frameworks)>
+    
+    4. Results: <What are the key findings? How do they contribute to the field? Any surprising/significant results?>
+    
+    5. Significance: <How does it advance understanding? What are potential applications/implications?>
+
+
+   ```
+    Draw from abstract, intro, and conclusion for a well-rounded explanation, with quotes and references to specific sections for clarity. Accessible to general audience while maintaining depth of original research.
+
+    **Style:**
+    
+    - Use clear, concise language
+    - Avoid jargon unless necessary. Define when used. 
+    - Use LaTeX for equations.
+    - Display mode for key equations. 
+    - Max 3 sentences/paragraph. 
+    - Prefer narrative over bullet points/lists for conversational tone.
+
+- Append to `learning.txt` following the format in `templates/learning.txt`. Write in progressive, conversational form. Prioritize **new** themes not yet captured. If this paper contradicts or weakens a prior theme, say so explicitly. Connect to prior work only when the connection is specific and non-obvious. Avoid restating themes already in `learning.txt`. Be concise and specific.
 
 ## Stop Conditions
 

@@ -2,7 +2,7 @@
 
 Build an AI skill from scratch. You will practice test-driven development, structured planning, and the Ralph Wiggum implementation pattern.
 
-We use [opencode](https://opencode.dev/) as the coding environment. `claude code` users: rename `.agents` to `.claude`.
+We use [opencode](https://opencode.ai/) as the coding environment. `claude code` users: rename `.agents` to `.claude`.
 
 ## Steps
 

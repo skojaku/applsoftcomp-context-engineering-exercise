@@ -4,8 +4,20 @@ Build an AI skill from scratch. You will practice test-driven development, struc
 
 We use [opencode](https://opencode.ai/) as the coding environment. `claude code` users: rename `.agents` to `.claude`.
 
+## Launch on GitHub Codespaces
+
+The easiest way to get started — no local install needed.
+
+1. Click the button below (or go to **Code → Codespaces → Create codespace on main**)
+
+   [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/skojaku/applsoftcomp-context-engineering-exercise)
+
+2. Wait for the container to build (~1 min on first launch, faster after that)
+3. Open a terminal and run `opencode`
+4. Follow [Setup](docs/setup.md) to connect your Ollama API key
+
 ## Steps
 
-1. [Setup](docs/setup.md) - install dependencies and configure your model
+1. [Setup](docs/setup.md) - connect your API key and install dependencies
 2. [Demo](docs/demo.md) - run the example skills to understand the patterns
 3. [Your Task](docs/task.md) - build your own skill

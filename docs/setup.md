@@ -2,12 +2,25 @@
 
 ![opencode](https://opencode.ai/social-share.png)
 
-> [!WARNING]
-> Set the LLM to `qwen3.5:35b`, `qwen3.5:397b`, or `glm-5` before starting.
-> These are available via [OpenRouter](https://openrouter.ai/) and [Ollama](https://ollama.com/) for free.
-> Type `/model` in opencode to select.
+## 1. Get an Ollama API key
 
-Run the setup skill to install dependencies:
+1. Go to [ollama.com](https://ollama.com/) and sign in (or create a free account)
+2. Navigate to **Settings → Keys**
+3. Click **Add API Key**, give it a name, and copy the key
+
+## 2. Connect OpenCode to Ollama Cloud
+
+In the opencode terminal, type:
+
+```
+/connect
+```
+
+Select **Ollama Cloud** and paste your API key. The model is pre-set to `qwen3.5:cloud`.
+
+## 3. Install dependencies
+
+Run the setup skill:
 
 ```
 /setup

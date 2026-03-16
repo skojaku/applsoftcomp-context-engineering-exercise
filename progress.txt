@@ -4,14 +4,13 @@
 # Add new entries below. Do not remove existing ones.
 
 # TODO
-# Ordered: foundational methods first, then analysis papers chronologically
 
-- [x] brown2020_gpt3_few_shot.pdf — DONE: Research note with motivation, method, results, and significance added.
-- [x] lu2022_prompt_order_sensitivity.pdf — DONE: Research note with motivation, method (entropy-based probing), results (13% improvement, order sensitivity universal), and significance added.
-- [x] li2023_emotional_stimuli.pdf — DONE: Research note with motivation (emotional intelligence in LLMs), method (EmotionPrompt from 3 psychological theories), results (8% Instruction Induction, 115% BIG-Bench, 10.9% human study improvement), and significance (interdisciplinary social science-AI avenue) added.
-- [x] gupta2023_majority_label_bias.pdf — DONE: Research note with motivation (robustness to majority label bias), method (RobustnessBoundary@K metric across 5 LLMs and 3 datasets), results (80-100% RB10 for binary tasks with larger models, ~50% for multi-class), and significance (challenges prior bias susceptibility claims, shows size-instruction correlation) added.
-- [x] gupta2023_persona_bias.pdf — DONE: Research note with motivation (persona-induced bias on reasoning), method (19 personas × 24 datasets × 4 LLMs), results (80% personas show bias, 70%+ drops, explicit abstentions + implicit errors), and significance (alignment only surface-level, mitigation fails) added.
-- [x] turpin2023_unfaithful_cot.pdf — DONE: Research note with motivation (CoT faithfulness vs plausibility), method (biasing features on BBH/BBQ across GPT-3.5/Claude 1.0), results (36% accuracy drop, 56-62% stereotype alignment), and significance (challenges CoT transparency assumptions, calls for explanation-consistency evaluation) added.
-- [x] zheng2024_personas_system_prompts.pdf — DONE: Research note with motivation (persona effects on objective tasks), method (162 personas × 4 LLM families × 2,410 MMLU questions, mixed-effects regression), results (no improvement vs control, 88-100% no effect, automatic selection ≈ random), and significance (challenges persona-based system prompt practice, effects unpredictable) added.
-- [x] du2024_context_vs_prior.pdf — DONE: Research note with motivation (context-prior integration), method (mutual information-based persuasion/susceptibility scores), results (relevant contexts more persuasive, familiar entities less susceptible, scaling reduces susceptibility), and significance (information-theoretic metrics for entity/context-specific analysis) added.
-- [x] leviathan2025_prompt_repetition.pdf — DONE: Research note with motivation (causal LM order sensitivity), method (prompt repetition across 7 LLMs × 7 benchmarks), results (47/70 wins, 0 losses, 21→97% on NameIndex), and significance (trivial drop-in fix for architectural limitation) added.
+- [x] brown2020_gpt3_few_shot.pdf — DONE: Research note entry + learning log reflection on in-context learning and scale
+- [x] lu2022_prompt_order_sensitivity.pdf — DONE: Research note entry + learning log reflection on prompt order sensitivity and entropy-based probing
+- [x] gupta2023_majority_label_bias.pdf — DONE: Research note entry + learning log reflection on robustness boundary metric and scale-instruction interaction
+- [x] gupta2023_persona_bias.pdf — DONE: Research note entry + learning log reflection on persona-induced bias (explicit abstentions & implicit reasoning errors) and ineffectiveness of de-biasing prompts
+- [x] li2023_emotional_stimuli.pdf — DONE: Research note entry + learning log reflection on emotional intelligence in LLMs and EmotionPrompt performance gains
+- [x] turpin2023_unfaithful_cot.pdf — DONE: Research note entry + learning log reflection on CoT faithfulness-plausibility distinction and systematic unfaithfulness under input biases
+- [x] zheng2024_personas_system_prompts.pdf — DONE: Research note entry + learning log reflection on persona ineffectiveness for factual tasks and unpredictability of persona effects
+- [x] du2024_context_vs_prior.pdf — DONE: Research note entry + learning log reflection on information-theoretic metrics for context-prior knowledge interplay and familiarity-based susceptibility
+- [x] leviathan2025_prompt_repetition.pdf — DONE: Research note entry + learning log reflection on prompt repetition as bidirectional attention fix and order-sensitivity neutralizer

@@ -53,11 +53,19 @@ With tests, we create a feedback loop for the agents, and agents can learn from 
 
 Open a fresh session.
 
-Write a prompt that:
-1. Points the agent to `PRD.md`
-2. Asks it to propose test cases per task (happy path, edge cases, bad inputs, failure modes), each with explicit input and expected output
-3. Asks the agent to show you each task's tests and wait for your approval before moving on
-4. Writes the approved tests back into `PRD.md`
+Paste this prompt:
+
+```
+Read PRD.md.
+
+For each task, propose test cases covering: happy path, edge cases, bad inputs,
+and failure modes. Each test case must include an explicit input and expected output.
+
+Show me the tests for one task at a time and ask for my approval before moving on.
+Refine any test I reject before proceeding.
+
+Once all tests are approved, add them to each task's subsection in PRD.md.
+```
 
 **Output:** `PRD.md` (updated with test cases)
 

@@ -87,3 +87,35 @@ where $K=10$ and $\#D$ is the number of distinct distributional settings. Experi
 5. Significance: This work reveals that LLM alignment addresses only surface-level biases while deep-rooted stereotypical presumptions persist underneath. The finding that persona assignment can degrade reasoning by 70%+ has profound implications for personalization applications, scientific human simulation research, and interactive systems. The ineffectiveness of prompt-based mitigation suggests architectural/training interventions are needed, calling for persona-aware alignment efforts.
 
 ---
+
+## Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting (Turpin et al., 2023)
+
+### Summary
+
+1. Motivation: Chain-of-thought prompting produces step-by-step reasoning before final outputs, inviting interpretation of these explanations as transparent windows into model decision-making. However, it remains unclear whether CoT explanations faithfully represent the true reasons behind predictions or merely provide plausible post-hoc rationalizations. Understanding this distinction is critical for AI safety, regulation, and responsible deployment.
+
+2. Diff of ideas: Prior CoT evaluation focuses on plausibility—whether explanations seem coherent and lead to correct answers—but this work distinguishes plausibility from faithfulness. Unlike previous perturbation studies that add errors to CoT demonstrations or irrelevant information to math questions, this paper introduces biasing features that predictably influence model outputs toward specific answers, testing whether explanations acknowledge these influences. The counterfactual simulatability framework measures whether explanations help predict model behavior on modified inputs.
+
+3. Method: Two benchmarks are used: BIG-Bench Hard (13 multiple-choice tasks requiring subjectivity or hard-to-falsify world knowledge) and the Bias Benchmark for QA (social stereotype questions). Two biasing features are tested on BBH: Answer is Always A (reordering few-shot options so correct answer is always A) and Suggested Answer (adding "I think the answer is X but I'm curious"). For BBQ, weak evidence is swapped between demographic groups to test consistency. Experiments use GPT-3.5 and Claude 1.0 across zero-shot and few-shot CoT settings. Faithfulness is measured via accuracy drops in biased contexts and stereotype-aligned predictions.
+
+4. Results: Adding biasing features causes accuracy drops up to 36% on BBH (36.3% for GPT-3.5 zero-shot Suggested Answer, 18.7% for Answer is Always A), with models never mentioning the biasing features in explanations. Few-shot CoT reduces unfaithfulness relative to zero-shot but remains substantial (24.1% and 21.5% drops). On BBQ, unfaithful explanations are stereotype-aligned 56-62% of the time (significantly above 50% baseline), with models weighing identical evidence inconsistently based on demographic associations. CoT can steer models from correct initial predictions toward bias-consistent answers, particularly in zero-shot settings.
+
+5. Significance: This work demonstrates that CoT explanations can be plausible yet systematically unfaithful, risking increased trust without guaranteed safety. The findings challenge assumptions that CoT provides genuine transparency, revealing that explanations may serve as rationalizations rather than true decision processes. Building transparent systems requires either targeted faithfulness improvements through explanation-consistency training signals or abandoning CoT for alternative methods. The results have implications for adversarial attacks via biased prompts and model auditing relying on CoT explanations.
+
+---
+
+## When "A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models (Zheng et al., 2024)
+
+### Summary
+
+1. Motivation: Commercial AI systems commonly define LLM roles in system prompts (e.g., "You are a helpful assistant"), yet it remains unclear how different personas affect model performance on objective tasks. This work asks whether adding personas to system prompts improves performance and whether persona social constructs (gender, type, domain) systematically influence outcomes.
+
+2. Diff of ideas: Unlike prior persona research focusing on subjective tasks, role-playing capabilities, or bias in reasoning (Gupta et al., 2024), this study isolates persona effects on factual questions across 162 diverse personas, 4 LLM families, and 2,410 MMLU questions. The key difference: evaluating personas on objective tasks where performance changes reflect persona effects alone rather than task subjectivity or dialogue quality metrics.
+
+3. Method: 162 personas from 6 interpersonal relationship types (family, friend, romantic, work, school, social) and 8 expertise domains were tested across FLAN-T5-XXL (11B), Llama-3 (8B/70B), Mistral-7B, and Qwen2.5 (7B/72B). Two prompt types were used: speaker-specific ("You are a {role}") and audience-specific ("You are talking to a {role}"). Mixed-effects regression models analyzed persona effects on accuracy, controlling for model random effects. Additional analyses examined gender, role category, domain alignment, word frequency, prompt-question similarity (MiniLM cosine similarity), and perplexity. Seven automatic persona selection strategies were tested: random, in-domain best, dataset classifier, role classifier, similarity-based, and best-per-question upper bound.
+
+4. Results: Adding personas does not improve performance compared to no-persona control (no significant differences for best-performing personas). Most personas show no effect (72.8-100% across models) or negative effects (11.7-27.2%). Audience-specific prompts outperform speaker-specific prompts with small effect sizes. Gender-neutral roles perform better than gendered roles (p < 0.05); work- and school-related roles outperform AI and occupational roles; in-domain roles show slight advantage (coefficient = 0.004, p < 0.01). Word frequency, prompt-question similarity, and perplexity weakly correlate with accuracy (|r| < 0.4). Automatic persona selection strategies perform marginally better than random or worse (Qwen), far from the upper bound where best-per-question selection significantly improves accuracy.
+
+5. Significance: This work challenges industry practice of persona-based system prompts, revealing that persona effects on objective tasks are largely unpredictable and idiosyncratic rather than systematic. The findings suggest that while certain personas may help individual questions, reliably identifying them is infeasible—persona effects appear random. The study introduces a computational pipeline for persona evaluation and calls for future de-biasing research, particularly given that masculine roles slightly outperform feminine roles (potentially reinforcing stereotypes). Results inform system prompt design: developers should prioritize gender-neutral roles and recognize that persona selection offers limited performance gains.
+
+---

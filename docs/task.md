@@ -8,36 +8,49 @@ Choose a skill to build:
 | ⭐⭐ | `trip-planner` | Given budget, dates, and group size, plan a trip from Binghamton with itinerary and costs |
 | ⭐⭐⭐ | `arxiv-recommender` | Given a research interest or paper abstract, recommend relevant arXiv papers with explanations |
 
----
 
 ## Step 1: Vibe
 
 Build a rough prototype with no planning. Goal: get a feel for what is hard. The output will be messy. That is intentional.
 
----
 
 ## Step 2: Plan
 
+Let's create a clear, unambiguous specification for the skill. This is the most important step.
+Every ambiguity left unresolved becomes a silent decision the agent makes during implementation, usually wrong.
+
 Discard the prototype. Open a fresh session (`/new`).
 
-> [!NOTE]
-> Fresh context forces you to articulate your idea explicitly. Vague plans produce vague output. Every ambiguity left unresolved becomes a silent decision the agent makes during implementation, usually wrong.
+Write a prompt using this scaffold (fill in every `[...]`):
 
-Write a prompt that:
-1. States what skill you are building and where it lives
-2. Instructs the agent to interview you one question at a time until nothing is ambiguous (inputs, outputs, edge cases, tools, format)
-3. Specifies the output format: ask the agent to write `PRD.md` where each task is a subsection with goal, inputs, outputs, and specifications
+```
+I want to build [DESCRIBE YOUR SKILL] under .agents/skills/[SKILL-NAME].
+
+[HOW SHOULD THE AGENT INTERVIEW YOU?
+ - how many questions at a time?
+ - what topics must it cover: inputs, outputs, edge cases, tools, format?
+ - how does it know when to stop asking?]
+
+When the interview is complete, write PRD.md. Each task is a subsection:
+
+## Task <N>: <name>
+- Goal: [WHAT FORMAT?]
+- Inputs: [WHAT FORMAT?]
+- Outputs: [WHAT FORMAT?]
+- Specifications: [WHAT FORMAT?]
+```
 
 **Output:** `PRD.md`
+
 
 ---
 
 ## Step 3: Test Design
 
-Open a fresh session.
+Let's build a set of tests to hammer on the implementation before actually implementing it! 
+With tests, we create a feedback loop for the agents, and agents can learn from their mistakes without human intervention.
 
-> [!NOTE]
-> Tests define "done" without ambiguity. Without them, the agent decides for itself when a task is complete.
+Open a fresh session.
 
 Write a prompt that:
 1. Points the agent to `PRD.md`

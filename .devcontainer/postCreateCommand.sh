@@ -13,7 +13,7 @@ uv --version
 
 # ── 2. Install Python dependencies ────────────────────────────────────────
 echo "Installing Python dependencies..."
-uv sync
+UV_LINK_MODE=copy uv sync
 echo "Verifying pymupdf..."
 uv run python -c "import fitz; print('pymupdf ok')"
 

@@ -25,13 +25,6 @@ The easiest way to get started. No local install needed.
 ![](./docs/codespace.png)
 
 1. After forking, go to your repository on the GitHub web page. Then, click Code → Codespaces → Create codespace on main**)
-
-
-
-
-   > [!NOTE]
-   > The button above links to the original repo. Open it from **your fork's page** so the Codespace is created under your account.
-
 2. Wait for the container to build (~1 min on first launch, faster after that)
 3. Open a terminal and run `opencode`
 4. Follow [Setup](docs/setup.md) to connect your Ollama API key

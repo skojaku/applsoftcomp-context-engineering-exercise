@@ -28,7 +28,7 @@ In the opencode terminal, type:
 Select your provider (**Ollama Cloud** or **OpenRouter**) and paste your API key.
 Switch models anytime with `/model`.
 
-> ![NOTE]
+> [!NOTE]
 > There are many models available on Ollama and OpenRouter. A recommended model is qwen 3.5 models. For ollama, you can choose qwen 3.5:397b-cloud model. For openrouter, you can additionally choose more cost-effective models like the qwen 35B model. The GLM from Zhipu AI is also a good choice (like glm-4.7, glm-5). That said, you can choose any model you like.
 
 ## 3. Install dependencies

@@ -51,10 +51,12 @@ EOF
 # ── 5. Update skill commands for this environment ─────────────────────────
 echo "Updating skill commands..."
 PYTHON_CMD="uv run python3"
+SED_INPLACE=(-i)
+[[ "$(uname)" == "Darwin" ]] && SED_INPLACE=(-i '')
 for skill_file in .agents/skills/*/SKILL.md; do
   if [ -f "$skill_file" ]; then
-    sed -i "s/python3 /$PYTHON_CMD /g" "$skill_file"
-    sed -i "s/python /$PYTHON_CMD /g" "$skill_file"
+    sed "${SED_INPLACE[@]}" "s/python3 /$PYTHON_CMD /g" "$skill_file"
+    sed "${SED_INPLACE[@]}" "s/python /$PYTHON_CMD /g" "$skill_file"
   fi
 done
 

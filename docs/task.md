@@ -20,6 +20,7 @@ Build a rough prototype with no planning. Goal: get a feel for what is hard. The
 
 Discard the prototype. Open a fresh session (`/new`).
 
+> [!NOTE]
 > Fresh context forces you to articulate your idea explicitly. Vague plans produce vague output. Every ambiguity left unresolved becomes a silent decision the agent makes during implementation, usually wrong.
 
 Write a prompt that:
@@ -35,6 +36,7 @@ Write a prompt that:
 
 Open a fresh session.
 
+> [!NOTE]
 > Tests define "done" without ambiguity. Without them, the agent decides for itself when a task is complete.
 
 Write a prompt that:
@@ -49,6 +51,7 @@ Write a prompt that:
 
 ## Step 4: Implement (Ralph Wiggum Pattern)
 
+> [!NOTE]
 > One agent runs too long and drifts. The Ralph Wiggum pattern fixes this: one sub-agent per task, each starting fresh. Shared files carry only what matters forward.
 
 ### How it works

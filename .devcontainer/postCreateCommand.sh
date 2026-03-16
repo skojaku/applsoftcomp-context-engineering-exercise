@@ -26,16 +26,23 @@ opencode --version 2>/dev/null || echo "OpenCode installed (restart terminal to 
 # ── 4. Configure OpenCode ─────────────────────────────────────────────────
 echo "Configuring OpenCode..."
 mkdir -p ~/.config/opencode
-cat > ~/.config/opencode/config.json << 'EOF'
+cat > ~/.config/opencode/opencode.json << 'EOF'
 {
-  "$schema": "https://opencode.ai/config.schema.json",
+  "$schema": "https://opencode.ai/config.json",
   "autoshare": false,
-  "model": "openrouter/qwen/qwen3-235b-a22b:free",
+  "model": "ollama/qwen3.5:35b",
   "provider": {
-    "openrouter": {
-      "name": "OpenRouter",
-      "api": "https://openrouter.ai/api/v1",
-      "apiKey": "${OPENROUTER_API_KEY}"
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "https://ollama.com/v1"
+      },
+      "models": {
+        "qwen3.5:35b": {
+          "name": "qwen3.5:35b"
+        }
+      }
     }
   }
 }
@@ -55,9 +62,8 @@ echo ""
 echo "=== Setup complete! ==="
 echo ""
 echo "Next steps:"
-echo "  1. Add your OpenRouter API key as a Codespaces secret named OPENROUTER_API_KEY"
-echo "     → github.com/settings/codespaces"
-echo "  2. Open a terminal and run: opencode"
+echo "  1. Open a terminal and run: opencode"
+echo "  2. Enter your Ollama API key when prompted (get one at ollama.com/settings/keys)"
 echo "  3. In OpenCode, type /setup to verify dependencies"
 echo "  4. Follow the exercise in docs/task.md"
 echo ""

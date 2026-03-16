@@ -9,7 +9,7 @@
 - [x] brown2020_gpt3_few_shot.pdf — DONE: Research note with motivation, method, results, and significance added.
 - [x] lu2022_prompt_order_sensitivity.pdf — DONE: Research note with motivation, method (entropy-based probing), results (13% improvement, order sensitivity universal), and significance added.
 - [x] li2023_emotional_stimuli.pdf — DONE: Research note with motivation (emotional intelligence in LLMs), method (EmotionPrompt from 3 psychological theories), results (8% Instruction Induction, 115% BIG-Bench, 10.9% human study improvement), and significance (interdisciplinary social science-AI avenue) added.
-- [ ] gupta2023_majority_label_bias.pdf —
+- [x] gupta2023_majority_label_bias.pdf — DONE: Research note with motivation (robustness to majority label bias), method (RobustnessBoundary@K metric across 5 LLMs and 3 datasets), results (80-100% RB10 for binary tasks with larger models, ~50% for multi-class), and significance (challenges prior bias susceptibility claims, shows size-instruction correlation) added.
 - [ ] gupta2023_persona_bias.pdf —
 - [ ] turpin2023_unfaithful_cot.pdf —
 - [ ] zheng2024_personas_system_prompts.pdf —

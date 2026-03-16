@@ -51,3 +51,23 @@ where $p_v^m$ is the predicted label probability over the probing set for permut
 5. Significance: This work establishes that LLMs not only comprehend but can be augmented by emotional stimuli, heralding a novel avenue for interdisciplinary social science-AI research. The simplicity of EmotionPrompt makes it widely applicable without complicated design, and its compatibility with existing methods (CoT, APE) demonstrates high extensibility. Open questions remain about how pre-training technologies influence emotional stimulus performance and how psychological phenomena can be incorporated into model training.
 
 ---
+
+## How Robust are LLMs to In-Context Majority Label Bias? (Gupta et al., 2023)
+
+### Summary
+
+1. Motivation: In-context learning can exhibit majority label bias when labeled examples in prompts are skewed toward certain classes, potentially causing LLMs to preferentially predict those labels. This bias arises from logistical constraints, data collection limitations, or inherent biases in real-world industry settings. The paper investigates how robust different LLMs are to varying degrees of class imbalance in text classification tasks.
+
+2. Diff of ideas: Prior work by Zhao et al. (2021) demonstrated that LLMs are susceptible to majority label bias but did not exhaustively examine robustness across varying class proportions. This paper challenges that assertion by showing robustness boundaries vary widely across models and tasks, with certain LLMs achieving approximately 90% robustness to majority label bias. The work introduces a novel RobustnessBoundary@K metric to quantify fault tolerance under distributional skew.
+
+3. Method: The study evaluates five open-source LLMs (OpenLlama-7B/13B, MPT-7B/30B, Falcon-40B) instruct-tuned on OASST data across three datasets: BoolQ (binary Yes/No), RTE-1/2/3 (binary entailment), and COVID-5G Conspiracy (multi-class). Prompts were constructed with varying label proportions (e.g., 0% Yes to 100% Yes in 10% steps). The RobustnessBoundary@K metric is defined as:
+
+$$RB_K := \frac{\#(\max_D F_1 \pm K\%)}{\#D}$$
+
+where $K=10$ and $\#D$ is the number of distinct distributional settings. Experiments compared prompts with and without task-specific instructions.
+
+4. Results: For binary classification tasks (BoolQ, RTE), RB10 falls within 50-90% range, with larger models showing higher robustness (Falcon-40B with instruction achieves 90-100% RB10). Multi-class tasks show reduced robustness (~50% RB10 for COVID-5G). Task-specific instructions significantly improve performance at distribution tails, with larger models benefiting more (~27.9% drop for 30B/40B models without instruction vs ~8.3% for 7B). Model size correlates positively with robustness: MPT-30B improves ~10.51% RB10 over 13B, and Falcon-40B improves ~3.08% over 30B.
+
+5. Significance: This work demonstrates that contrary to prior findings, LLMs exhibit considerable robustness to majority label bias, particularly for binary tasks with larger models. The positive correlation between model size and robustness suggests scaling improves fault tolerance to distributional skew. Task-specific instructions emerge as critical for maintaining performance in extreme skew settings, revealing that larger LLMs are more sensitive to prompt informativeness. Future directions include guided generation for controlled output and PEFT fine-tuning to address remaining biases.
+
+---

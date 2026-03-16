@@ -9,8 +9,9 @@ Build an AI skill from scratch. You will practice test-driven development, struc
 
 We use [opencode](https://opencode.ai/) as the coding environment. `claude code` users: rename `.agents` to `.claude`.
 
-
 ## Steps
+
+(Complete steps 1--3) before the class.
 
 1. [Before you start](docs/before-you-start.md)
 2. [Launch the codespaces](docs/codespaces.md)

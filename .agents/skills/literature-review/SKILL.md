@@ -14,13 +14,26 @@ Shared files: `progress.txt` (done/remaining), `learning.txt` (cross-paper insig
 
 ## Sub-Agents (all spawned via Task tool, `general`/`mode: subagent`)
 
-Abstract Extraction (parallelizable, once per paper): run `python3 tools/extract_pdf.py <input.pdf>`; append `filename.pdf: abstract text` to `abstracts.txt`. Append only; do not read.
+Abstract Extraction (parallelizable, once per paper):
+1. Run `python3 tools/extract_pdf.py <input.pdf>`.
+2. Append `filename.pdf: abstract text` to `abstracts.txt`. Append only; do not read.
 
-Planning (once): read `abstracts.txt`; reorder `progress.txt` entries foundational-first. Do not mark any paper done.
+Planning (once):
+1. Read `abstracts.txt`.
+2. Reorder `progress.txt` entries foundational-first. Do not mark any paper done.
 
-Reading (sequential, once per paper): read `progress.txt` → pick next unreviewed; read `learning.txt` for context; extract paper via `python3 tools/extract_pdf.py <input.pdf>`; read `templates/research_note.md` for format then append new entry to `research_note.md` (append only, do not read); append to `learning.txt` (format from `templates/learning.txt`) noting contradictions and avoiding restatement; mark paper done in `progress.txt` with one-line note.
+Reading (sequential, once per paper):
+1. Read `progress.txt` → pick next unreviewed paper.
+2. Read `learning.txt` for accumulated themes/gaps.
+3. Extract paper: `python3 tools/extract_pdf.py <input.pdf>`.
+4. Read `templates/research_note.md` for format; append new entry to `research_note.md`. Append only; do not read `research_note.md`.
+5. Append to `learning.txt` (format from `templates/learning.txt`). Note contradictions; avoid restating existing themes.
+6. Mark paper done in `progress.txt` with one-line note.
 
-Synthesis (once, after all papers done): read `research_note.md`, `learning.txt`, `templates/synthesis.md`; overwrite `synthesis.md` with all three sections (Synthesis, Contradictions, Open Questions).
+Synthesis (once, after all papers done):
+1. Read `research_note.md` and `learning.txt`.
+2. Read `templates/synthesis.md` for format.
+3. Overwrite `synthesis.md` with all three sections: Synthesis, Contradictions, Open Questions.
 
 Writing style (all sub-agents): clear+concise, define jargon, LaTeX for equations (display mode for key ones), max 3 sentences/paragraph, paragraph-based narrative, no bullets/tables, conversational tone.
 

@@ -15,12 +15,12 @@ cat > ~/.config/opencode/opencode.json << 'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
   "autoshare": false,
-  "model": "ollama-cloud/qwen3.5:35b",
+  "model": "ollama-cloud/qwen3.5:cloud",
   "provider": {
     "ollama-cloud": {
       "models": {
-        "qwen3.5:35b": {
-          "name": "qwen3.5:35b"
+        "qwen3.5:cloud": {
+          "name": "qwen3.5:cloud"
         }
       }
     }

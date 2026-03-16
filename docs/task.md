@@ -13,6 +13,9 @@ Choose a skill to build:
 
 Build a rough prototype with no planning. Goal: get a feel for what is hard. The output will be messy. That is intentional.
 
+> [!TIP]
+> Instruct agents to make atomic commit with clear message after each task. The git log then becomes a second-brain of the agent, recording what was done, when, and why. It also allows you to easily roll back if something goes wrong. Agents may also remove some files accidentally. So keeping track of changes with git is crucial for agentic coding. 
+
 
 ## Step 2: Plan
 
@@ -96,14 +99,11 @@ If you cannot answer a question, your `PRD.md` is not specific enough. Go back t
 
 Run your skill on the tests you designed. Fix the skill until you are satisfied with the results. 
 
-
-### Tips 
-
-Shorter instruction is better, not just for the agent, but also for you for readability and maintainability. Too long instruction is hard to understand and hard to maintain. This echoes the principle of ["Documentation is automation"](https://cacm.acm.org/practice/documentation-is-automation/).
-
-If the prompt is exceeding 100 lines, consider creating templates for parts or use tools to automate parts of the process.
-
 > [!TIP]
-> Put `Sacrifice grammer` is effective in condensing instructions. Agents tend to follow grammer rules too strictly, which can lead to unnecessary verbosity. By explicitly allowing the agent to sacrifice grammar, you can encourage it to be more concise and to the point, which is often more effective for task-oriented prompts.
+> Shorter instruction is better, not just for the agent, but also for you for readability and maintainability. Too long instruction is hard to understand and hard to maintain. This echoes the principle of ["Documentation is automation"](https://cacm.acm.org/practice/documentation-is-automation/).
+>
+> If the prompt is exceeding 150 lines (my rule-of-thumb), consider creating templates for parts or use tools to automate parts of the process.
+>
+> Putting `Sacrifice grammer` is effective in condensing instructions. Agents tend to follow grammer rules too strictly, which can lead to unnecessary verbosity. By explicitly allowing the agent to sacrifice grammar, you can encourage it to be more concise and to the point, which is often more effective for task-oriented prompts.
 
  
